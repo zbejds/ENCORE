@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 :root {
+  --font-display: "Unbounded";
+  --font-body: "Instrument Sans";
+  --font-mono: "JetBrains Mono";
   color-scheme: dark;
 }
 

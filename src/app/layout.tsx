@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Sans, JetBrains_Mono, Unbounded } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Providers } from "@/components/Providers";
 import { StatusBanner } from "@/components/StatusBanner";
 import "./globals.css";
 
-const display = Unbounded({ subsets: ["latin"], weight: ["500", "700", "900"], variable: "--font-display" });
-const body = Instrument_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-body" });
-const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-mono" });
+// Fonts load from Google Fonts in the browser (not at build time), so a
+// font-server hiccup can never fail the Vercel build.
+const FONTS_URL =
+  "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@500;700;900&display=swap";
 
 export const metadata: Metadata = {
   title: { default: "ENCORE — Every legend gets an encore", template: "%s · ENCORE" },
@@ -24,7 +24,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link rel="stylesheet" href={FONTS_URL} />
+      </head>
       <body className="min-h-dvh font-sans">
         <Providers>
           <div className="relative z-10 flex min-h-dvh flex-col">
