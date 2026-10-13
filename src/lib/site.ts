@@ -7,4 +7,4 @@
 export const X_URL = "https://x.com/Encoresolana";
 export const X_HANDLE = "@Encoresolana";
 
-export const ENCORE_CA = "";
+export const ENCORE_CA = "AhXRqrfYhZKUYBBUeLZrGWVLyWy9nwrncE4bo1h4pump";
