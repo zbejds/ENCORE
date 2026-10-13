@@ -385,6 +385,51 @@
       "blurb": "Proudly does nothing. A 2025 launchpad meme that leaned into having no utility at all."
     },
     {
+      "mint": "5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2",
+      "symbol": "TROLL",
+      "name": "TROLL",
+      "chain": "solana",
+      "listed": true,
+      "launchPlatform": "pump.fun",
+      "era": "Apr 2025 · Launchpad wars",
+      "categories": [
+        "pumpfun",
+        "viral"
+      ],
+      "legendRank": 25,
+      "blurb": "The classic trollface, reborn as a pump.fun meme. Problem?"
+    },
+    {
+      "mint": "6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx",
+      "symbol": "RETARDIO",
+      "name": "RETARDIO",
+      "chain": "solana",
+      "listed": true,
+      "launchPlatform": "Raydium",
+      "era": "Feb 2024 · First wave",
+      "categories": [
+        "raydium",
+        "underdogs"
+      ],
+      "legendRank": 26,
+      "blurb": "A goofy early-2024 Raydium meme with a stubborn, cult-like community."
+    },
+    {
+      "mint": "8Ki8DpuWNxu9VsS3kQbarsCWMcFGWkzzA8pUPto9zBd5",
+      "symbol": "LOCKIN",
+      "name": "LOCK IN",
+      "chain": "solana",
+      "listed": true,
+      "launchPlatform": "Raydium",
+      "era": "Mar 2024 · Presale mania",
+      "categories": [
+        "raydium",
+        "favorites"
+      ],
+      "legendRank": 27,
+      "blurb": "Built on the \"lock in\" catchphrase from March 2024. Stop scrolling, start focusing."
+    },
+    {
       "mint": "7BgBvyjrZX1YKz4oh9mjb8ZScatkkwb8DzFx7LoiVkM3",
       "symbol": "SLERF",
       "name": "SLERF (pre-migration mint)",
