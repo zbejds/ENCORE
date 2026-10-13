@@ -2,7 +2,7 @@ import "server-only";
 import { createHash, randomBytes } from "node:crypto";
 import bs58 from "bs58";
 import nacl from "tweetnacl";
-import { db, withTx } from "./db";
+import { db, ensureSchema, withTx } from "./db";
 import { env } from "./env";
 import { getToken, isListedMint, listedTokens } from "./registry";
 import { getSolBalance } from "./rpc";
@@ -31,8 +31,8 @@ export function syncRegistry(): Promise<void> {
   const pool = db();
   if (!pool) return Promise.resolve();
   if (!registrySynced) {
-    registrySynced = pool
-      .query(
+    registrySynced = ensureSchema()
+      .then(() => pool.query(
         `INSERT INTO tokens (mint, symbol, name, chain, listed, launch_platform, era, legend_rank)
          SELECT * FROM unnest($1::text[], $2::text[], $3::text[], $4::text[], $5::bool[], $6::text[], $7::text[], $8::int[])
          ON CONFLICT (mint) DO UPDATE SET symbol = EXCLUDED.symbol, name = EXCLUDED.name, listed = EXCLUDED.listed,
@@ -47,7 +47,7 @@ export function syncRegistry(): Promise<void> {
           listedTokens.map((t) => t.era),
           listedTokens.map((t) => t.legendRank),
         ],
-      )
+      ))
       .then(() =>
         pool.query(`UPDATE tokens SET listed = FALSE, updated_at = now() WHERE listed AND NOT (mint = ANY($1))`, [
           listedTokens.map((t) => t.mint),
@@ -147,6 +147,7 @@ export async function issueChallenge(wallet: string, mint: string) {
   if (!isPubkey(wallet)) throw new VoteError(400, "That is not a valid Solana wallet address.", "bad_wallet");
   const token = getToken(mint);
   if (!token || !isListedMint(mint)) throw new VoteError(404, "This token is not listed on ENCORE.", "not_listed");
+  await syncRegistry();
 
   const nonce = bs58.encode(randomBytes(18));
   const issued = new Date();

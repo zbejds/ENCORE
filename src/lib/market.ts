@@ -1,6 +1,7 @@
 import "server-only";
 import { cached, fetchJson } from "./cache";
 import { db } from "./db";
+import { syncRegistry } from "./votes";
 import type { MarketData, PairInfo, Venue } from "./types";
 
 const DS = "https://api.dexscreener.com";
@@ -120,6 +121,7 @@ async function saveSnapshots(list: MarketData[]) {
   const pool = db();
   if (!pool || !list.length) return;
   try {
+    await syncRegistry(); // tables + token rows exist before snapshots reference them
     for (const m of list) {
       await pool.query(
         `INSERT INTO market_snapshots (mint, payload, source, fetched_at)

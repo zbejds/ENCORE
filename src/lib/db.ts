@@ -1,6 +1,7 @@
 import "server-only";
 import { Pool, type PoolClient } from "pg";
 import { env } from "./env";
+import { SCHEMA_SQL } from "./schema";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -18,6 +19,26 @@ export function db(): Pool | null {
     });
   }
   return global.__encorePool;
+}
+
+/**
+ * Create the tables if they are missing, once per server instance. This means a
+ * fresh (empty) Neon database works without any manual SQL step.
+ */
+let schemaReady: Promise<void> | null = null;
+export function ensureSchema(): Promise<void> {
+  const pool = db();
+  if (!pool) return Promise.resolve();
+  if (!schemaReady) {
+    schemaReady = pool
+      .query(SCHEMA_SQL)
+      .then(() => undefined)
+      .catch((e) => {
+        schemaReady = null; // retry on the next request
+        throw e;
+      });
+  }
+  return schemaReady;
 }
 
 export async function withTx<T>(fn: (c: PoolClient) => Promise<T>): Promise<T> {
